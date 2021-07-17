@@ -46,7 +46,7 @@ or
 ./fft-modgui 0 0 0
 
 
-- where the 1st Arguments describes how many stations will be skipped;
+- where the first Argument describes how many stations will be skipped; (0 = beacon, 1 = first after beacon, ...)
 
 - (modgui only) the second argument toggles the GUI (0 = off, 1 = on)
 
