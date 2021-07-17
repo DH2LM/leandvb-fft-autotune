@@ -1,5 +1,5 @@
 # leandvb-fft-autotune
-A script by Martin DH1DF for LeanDVB to automatically tune into found stations.
+A script by Martin DH1DF and me for LeanDVB to automatically tune into found stations.
 
 
 ### About
