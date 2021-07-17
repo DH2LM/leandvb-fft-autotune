@@ -5,6 +5,10 @@ A script by Martin DH1DF and me for LeanDVB to automatically tune into found sta
 ### About
 These scripts allow you to automatically tune into QO-100 DATV stations via LeanDVB. It was originally written by Martin DH1DF and extended by a few functions by me.
 
+Since this script uses Websockets to access the [Goonhilly Monitor's](https://eshail.batc.org.uk/wb/) data to determine the frequencies and signal rates, you need to be online at least when you start one script.
+
+It currently works only for RTL-SDRs.
+
 
 ### Installing
 #### Dependencies
