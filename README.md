@@ -11,20 +11,7 @@ It currently works only for RTL-SDRs.
 
 
 ### Installing
-#### Dependencies
-- An Installation of [LeanDVB](http://www.pabr.org/radio/leandvb/leandvb.en.html)
-- Python3 and Python3-Websockets to run the script properly
-```
-sudo apt-get update && sudo apt-get upgrade
-sudo apt install python3 python3-pip python3-websockets
-```
-
-
-#### The Easy Way
-TBA
-
-
-#### The Hard Way
+#### Prerequisites
 - Install [LeanDVB](http://www.pabr.org/radio/leandvb/leandvb.en.html). ```/home/your-user-name/leandvb/src/apps``` Should be the directory where the built applications are located.
 
 - Install the remaining dependencies:
@@ -33,9 +20,11 @@ sudo apt-get update && sudo apt-get upgrade
 sudo apt install python3 python3-pip python3-websockets
 ```
 
+#### Acquiring the Scripts
 - Clone both scripts 
 ```cd ~ && git clone https://github.com/creepebrine/leandvb-fft-autotune```
-You now can find them under /home/your-user-name/leandvb-fft-autotune.
+You now can find them under /home/your-user-name/leandvb-fft-autotune. 
+Alternatively, you can get a .ZIP-File containing both scripts [HERE](https://github.com/creepebrine/leandvb-fft-autotune/archive/refs/heads/main.zip) and unpack the scripts to any location.
 
 
 ### Usage
