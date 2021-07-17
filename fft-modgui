@@ -1,0 +1,132 @@
+#! /usr/bin/python
+import websocket
+import matplotlib
+import struct
+import math
+matplotlib.use('Qt5Agg')
+import matplotlib.pyplot as plt
+import sys
+import os
+import time
+count=int(sys.argv[1])
+gui=int(sys.argv[2])
+savestream=int(sys.argv[3])
+
+try:
+    import thread
+except ImportError:
+    import _thread as thread
+import time
+
+def calc_sr(sr):
+    if (sr < 22):
+        return 0
+    if (sr < 60):
+        return 35
+    if (sr < 86):
+        return 66
+    if (sr < 185):
+        return 125
+    if (sr < 277):
+        return 250
+    if (sr < 388):
+        return 333
+    if (sr < 700):
+        return 500
+    if (sr < 1200):
+        return 1000
+    if (sr < 1700):
+        return 1500
+    if (sr < 2200):
+        return 2000
+
+def on_message(ws, message):
+    global count
+    f=0.00982362204724409448
+    f=1.0/101.8
+    sum=0
+    data=struct.unpack('922H',message)
+#    for i in range(len(message)/2):
+#        data.append(ord(message[i*2+1:i*2+2]))
+    oldsignal=False
+    for i in range(922):
+        sum+=data[i]
+        signal=data[i]>25000
+        if (signal != oldsignal):
+            if (signal == False):
+                center=490.595+(i+last)/2*f
+                sr=calc_sr((i-last)*f*1000)
+                avg=sum/(i-last)
+                # db=math.log10(avg)*10-46.5
+                db=avg/3276.8-11.0
+                # print(last,i,(i-last)*9,center,sr)
+                # print((i+last)/2,center,sr)
+                if (sr > 0):
+                    print("{:.3f} {:.0f} {:.1f}".format(center,sr,db))
+                    if (count == 0):
+                        cstr=str(int(center*1000+0.5))
+                        srstr=str(sr*1000)
+			ratestr="2400000"
+			#ratestr="2000000"
+                        #cmd="cd ~/amateurfunk/digimodes/dvb/linux-ador/leansdr/src/apps && xterm -T '"+cstr+" "+srstr+"' -e sh -c 'rtl_sdr -f $(("+cstr+"*1000+250200000)) -s  -g 30 - | tee /tmp/iq.$$ | ./leandvb --inpipe 32000000 --nhelpers 6 --sr "+srstr+" --sampler rrc --rrc-rej 30 --standard DVB-S2  --ldpc-helper ./ldpc_tool -v -d | vlc -'"
+                        #cmd="cd ~/leansdr/src/apps && xterm -T '"+cstr+" "+srstr+"' -e sh -c 'rtl_sdr -f $(("+cstr+"*1000+250200000)) -s "+ratestr+" -g 20 - | ./leandvb -f "+ratestr+" --inpipe 32000000 --nhelpers 6 --gui --sr "+srstr+" --sampler rrc --rrc-rej 30 --standard DVB-S2  --ldpc-helper ./ldpc_tool -v -d | vlc -'"
+			if (gui == 1):
+				guistr='--gui'
+			else:
+				guistr=''
+			if (savestream == 1):
+				iqstr=''
+				tsstr=' | tee ~/out.ts '
+			elif (savestream == 2):
+				iqstr=' | tee ~/out.iq '
+				tsstr=''
+			else:
+				iqstr=''
+				tsstr=''
+                        cmd="cd ~/leansdr/src/apps && xterm -T '"+cstr+" "+srstr+"' -e sh -c 'rtl_sdr -f $(("+cstr+"*1000+250200000)) -s 2400000 -g 30 - "+iqstr+" | ./leandvb --inpipe 24000000 --nhelpers 6 "+guistr+" --sr "+srstr+" --sampler rrc --rrc-rej 30 --standard DVB-S2  --ldpc-helper ./ldpc_tool -v -d "+tsstr+"| vlc -'"
+                        print(cmd)
+			ret=os.system(cmd)
+			if (ret != 0):
+				sys.exit(ret)
+                    else:
+                        count-=1
+            else:
+                sum=0
+            last=i
+            oldsignal=signal
+    plt.clf()
+    plt.axis([0,922,0,50000])
+    plt.ylabel('some numbers')
+    plt.plot(data)
+    plt.show(block=False)
+    plt.pause(0.1)
+    #plt.waitforbuttonpress()
+    #sys.exit(0)
+
+def on_error(ws, error):
+    print(error)
+
+def on_close(ws, close_status_code, close_msg):
+    print("### closed ###")
+
+def on_open(ws):
+    def run(*args):
+        while True:
+	    try:
+		time.sleep(1)
+	    except e:
+		sys.exit(1)
+        ws.close()
+        print("thread terminating...")
+    thread.start_new_thread(run, ())
+
+if __name__ == "__main__":
+    websocket.enableTrace(True)
+    ws = websocket.WebSocketApp("wss://eshail.batc.org.uk/wb/fft",
+                              on_open=on_open,
+                              on_message=on_message,
+                              on_error=on_error,
+                              on_close=on_close)
+
+    ws.run_forever()
+
