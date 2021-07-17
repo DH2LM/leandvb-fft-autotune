@@ -40,11 +40,17 @@ You now can find them under /home/your-user-name/leandvb-fft-autotune.
 Both scripts can be used using the following commands and arguments:
 ```
 ./fft 0
+
 or
+
 ./fft-modgui 0 0 0
-where the 1st Arguments describes how many stations will be skipped;
-(modgui only) the second argument toggles the GUI (0 = off, 1 = on)
-(modgui only) the thrid argument enables/disables recording of the output (0 = off, 1 = TS output, 2 = RAW IQ)
+
+
+- where the 1st Arguments describes how many stations will be skipped;
+
+- (modgui only) the second argument toggles the GUI (0 = off, 1 = on)
+
+- (modgui only) the thrid argument enables/disables recording of the output (0 = off, 1 = TS output, 2 = RAW IQ)
 ```
 
 To switch to the next station, simply close the XTerm Window the script automatically opens. To quit, CTRL+C the Python Script.
