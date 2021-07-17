@@ -66,7 +66,7 @@ Use the fft script for this example, since you want to use the GUI and you do no
 
 
 ### Necessary Adjustments
-Since every LNB has a different drift, you might have to adjust the drift. Use the GUI and a rather narrow station (if available) to crudely determine the needed offset using the signal's bandwith and the fact that if your signal is left of the middle your frequency is too low and vice versa. To adjust the offset, open the scripts with your favourite editor and search for the line that starts with ```cmd=```. Look for ```rtl_sdr -f``` in that particular line. There you will find the formula to determine the frequency: ```((freq)*1000+offset```. Change the offset the way you need it.
+Since every LNB has a different drift, you might have to adjust the drift. Use the GUI and a rather narrow station (if available) to crudely determine the needed offset using the signal's bandwith and the fact that if your signal is left of the middle your frequency is too low and vice versa. To adjust the offset, open the scripts with your favourite editor and search for the line that starts with ```cmd=```. Look for ```rtl_sdr -f``` in that particular line. There you will find the formula to determine the frequency: ```((freq)*1000+offset)```. Change the offset the way you need it.
 
 
 ### To be added // TBA
